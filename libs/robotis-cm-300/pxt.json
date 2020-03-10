@@ -14,6 +14,7 @@
         "core---nrf52": "file:../core---nrf52",
         "buttons": "file:../buttons",
         "serial": "file:../serial",
+        "mixer---nrf52": "file:../mixer---nrf52",
         "robotis-cm-300-blocks": "file:../robotis-cm-300-blocks"
     },
     "public": true,
