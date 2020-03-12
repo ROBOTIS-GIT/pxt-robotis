@@ -243,6 +243,7 @@
         },
         "allowPackageExtensions": true,
         "extendEditor": true,
+        "extendFieldEditors": true,
         "crowdinProject": "kindscript",
         "scriptManager": true,
         "simScreenshot": true,
