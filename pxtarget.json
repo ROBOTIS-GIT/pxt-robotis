@@ -90,7 +90,9 @@
         "onStartWeight": 100,
         "pauseUntilBlock": {},
         "breakBlock": true,
-        "continueBlock": true
+        "continueBlock": true,
+        "bannedCategories": [
+        ]
     },
     "compile": {
         "isNative": true,

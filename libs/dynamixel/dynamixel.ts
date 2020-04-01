@@ -225,6 +225,6 @@ namespace dynamixel {
             value = d.dxlDevice.read(id, 128, 4).getNumber(NumberFormat.Int32LE, 0);
         }
         return value;
-    }    
+    }        
 
 } // namespace dynamixel
