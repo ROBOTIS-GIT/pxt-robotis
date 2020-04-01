@@ -19,7 +19,7 @@ namespace pxsim.visuals {
             this.defs = [];
             this.element = this.mkBtn();
             let pinStr = pxsim.readPin(otherParams["button"]);
-            this.pinId = pxsim.pinIds[pinStr];
+            //this.pinId = pxsim.pinIds[pinStr];
             this.button = new CommonButton(this.pinId);
             this.state.buttonsByPin[this.pinId] = this.button;
             this.updateState();

@@ -1,173 +1,174 @@
+/// <reference path="./layoutView.ts" />
+
+namespace pxsim {
+    export const GAME_LOOP_FPS = 32;
+}
+
 namespace pxsim.visuals {
-    const svg = pxsim.svg;
 
-    export const VIEW_WIDTH = 372.3404255319149;
-    export const VIEW_HEIGHT = 361.70212765957444;
-    const TOP_MARGIN = 20;
-    const MID_MARGIN = 40;
-    const BOT_MARGIN = 20;
-    const PIN_LBL_SIZE = PIN_DIST * 0.7;
-    const PIN_LBL_HOVER_SIZE = PIN_LBL_SIZE * 1.5;
-    const SQUARE_PIN_WIDTH = PIN_DIST * 0.66666;
-    const SQUARE_PIN_HOVER_WIDTH = PIN_DIST * 0.66666 + PIN_DIST / 3.0;
+    const CM_STYLE = `
+        svg.sim {
+            margin-bottom:1em;
+        }
+        svg.sim.grayscale {
+            -moz-filter: grayscale(1);
+            -webkit-filter: grayscale(1);
+            filter: grayscale(1);
+        }
+        .user-select-none, .sim-button {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;                        
+        }
+        .sim-button {
+            cursor: pointer;
+        }
+        .sim-button:hover {
+            stroke-width: 2px !important;
+            stroke: white !important;
+        }
 
-    const STYLE = `
-.sim-board-pin {
-    stroke: #404040;
-    fill: #000000;
-}
-.sim-board-button {
-    stroke: #aaa;
-    stroke-width: 3px;
-    fill: #666;
-}
-.sim-board-button.pressed {
-    fill: #ee0;
-}
-.sim-board-button:hover {
-    stroke-width: 4px;
-    stroke: #ee0;
-    cursor: pointer;
-}
-    `
+        .sim-systemled {
+            fill:#333;
+            stroke:#555;
+            stroke-width: 1px;
+        }
 
+        .sim-text {
+            font-family:"Lucida Console", Monaco, monospace;
+            font-size:8px;
+            fill:#fff;
+            pointer-events: none;
+            user-select: none;
+        }
+        .sim-text.small {
+            font-size:6px;
+        }
+        .sim-text.medium {
+            font-size:16px;
+        }
+        .sim-text.large {
+            font-size:20px;
+        }
+        .sim-text.number {
+            font-family: Courier, Lato, Work Sans, PT Serif, Source Serif Pro;
+            /*font-weight: bold;*/
+        }
+        .sim-text.inverted {
+            fill: #5A5A5A; /*#F12B21;*/
+        }
+
+        .no-drag, .sim-text, .sim-text-pin {
+            user-drag: none;
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-drag: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* Color Grid */
+        .sim-color-grid-circle:hover {
+            stroke-width: 0.4;
+            stroke: #000;
+            cursor: pointer;
+        }
+        .sim-color-selected {
+            stroke-width: 1px !important;
+            stroke: #000000 !important;
+        }
+        .sim-color-wheel-half:hover {
+            stroke-width: 1;
+            stroke: #000;
+            fill: gray !important;
+            cursor: pointer;
+        }
+
+    `;
+
+    const CM_WIDTH = 99.984346;
+    const CM_HEIGHT = 151.66585;
+    export const SCREEN_WIDTH = 178;
+    export const SCREEN_HEIGHT = 128;
     export interface IBoardTheme {
         accent?: string;
+        highContrast?: boolean;
         display?: string;
-        pin?: string;
-        pinTouched?: string;
-        pinActive?: string;
-        ledOn?: string;
-        ledOff?: string;
         buttonOuter?: string;
         buttonUps: string[];
         buttonDown?: string;
-        virtualButtonOuter?: string;
-        virtualButtonUp?: string;
-        virtualButtonDown?: string;
-        lightLevelOn?: string;
-        lightLevelOff?: string;
-        soundLevelOn?: string;
-        soundLevelOff?: string;
+        wireColor?: string;
+        backgroundViewColor?: string;
     }
 
     export var themes: IBoardTheme[] = ["#3ADCFE"].map(accent => {
         return {
             accent: accent,
-            pin: "#D4AF37",
-            pinTouched: "#FFA500",
-            pinActive: "#FF5500",
-            ledOn: "#ff7777",
-            ledOff: "#fff",
             buttonOuter: "#979797",
-            buttonUps: ["#000", "#000", "#000"],
-            buttonDown: "#FFA500",
-            virtualButtonDown: "#FFA500",
-            virtualButtonOuter: "#333",
-            virtualButtonUp: "#fff",
-            lightLevelOn: "yellow",
-            lightLevelOff: "#555",
-            soundLevelOn: "#7f8c8d",
-            soundLevelOff: "#555",
+            buttonUps: ["#a8aaa8", "#393939", "#a8aaa8", "#a8aaa8", "#a8aaa8", '#a8aaa8'],
+            buttonDown: "#000",
+            wireColor: '#5A5A5A',
+            backgroundViewColor: '#d6edff'
         }
     });
 
-    export function randomTheme(): IBoardTheme {
-        return themes[Math.floor(Math.random() * themes.length)];
-    }
-
-    export type ComputedBoardDimensions = {
-        scaleFn: (n: number) => number,
-        height: number,
-        width: number,
-        xOff: number,
-        yOff: number
-    };
-
-    export function getBoardDimensions(vis: BoardImageDefinition): ComputedBoardDimensions {
-        let scaleFn = (n: number) => n * (PIN_DIST / vis.pinDist);
-        let width = scaleFn(vis.width);
-        return {
-            scaleFn: scaleFn,
-            height: scaleFn(vis.height),
-            width: width,
-            xOff: (VIEW_WIDTH - width) / 2.0,
-            yOff: TOP_MARGIN
+    export function randomTheme(highContrast?: boolean, light?: boolean): IBoardTheme {
+        let theme = themes[Math.floor(Math.random() * themes.length)];
+        if (highContrast) {
+            theme = JSON.parse(JSON.stringify(theme)) as IBoardTheme;
+            theme.highContrast = true;
+            theme.wireColor = '#ffffff';
+            theme.backgroundViewColor = '#ffffff';
         }
+        return theme;
     }
 
-    export interface MetroBoardProps extends GenericBoardProps {
+    export interface IBoardProps {
         runtime?: pxsim.Runtime;
         theme?: IBoardTheme;
         disableTilt?: boolean;
+        wireframe?: boolean;
     }
 
-    export class MetroBoardSvg extends GenericBoardSvg {
+    export class CMView implements BoardView {
+        public static BOARD_WIDTH = 500;
+        public static BOARD_HEIGHT = 500;
+
+        public wrapper: HTMLDivElement;
+        public element: SVGSVGElement;
+        private style: SVGStyleElement;
+        private defs: SVGDefsElement;
+
+        private layoutView: LayoutView;
+
+        private cachedControlNodes: { [index: string]: View[] } = {};
+        private cachedDisplayViews: { [index: string]: LayoutElement[] } = {};
+        private cachedCloseIcons: { [index: string]: View } = {};
+        private cachedBackgroundViews: { [index: string]: View } = {};
+
+        private screenCanvas: HTMLCanvasElement;
+        private screenCanvasCtx: CanvasRenderingContext2D;
+        private screenCanvasData: ImageData;
+
+        private screenCanvasTemp: HTMLCanvasElement;
+
+        private screenScaledWidth: number;
+        private screenScaledHeight: number;
+
+        private width = 0;
+        private height = 0;
+
+        private g: SVGGElement;
 
         public board: pxsim.DalBoard;
-        private onBoardLeds: BoardLed[];
-        private onBoardNeopixels: BoardNeopixel[];
-        private onBoardReset: BoardResetButton;
-        private onBoardButtons: BoardButton[];
-        private onBoardTouchPads: BoardTouchButton[];
 
-        constructor(public props: MetroBoardProps) {
-            super(props);
-
-            const el = this.getView().el;
-            this.addDefs(el);
-
-            this.onBoardLeds = []
-            this.onBoardNeopixels = [];
-            this.onBoardTouchPads = [];
-            this.onBoardButtons = [];
-
-            // neopixels/leds
-            for (const l of props.visualDef.leds || []) {
-                if (l.color == "neopixel") {
-                    const onBoardNeopixel = new BoardNeopixel(l.label, l.x, l.y, l.w || 0);
-                    this.onBoardNeopixels.push(onBoardNeopixel);
-                    el.appendChild(onBoardNeopixel.element);
-                } else {
-                    const pin = pinByName(l.label);
-                    if (pin) {
-                        let bl = new BoardLed(l.x, l.y, l.color, pinByName(l.label),
-                            l.w || 9, l.h || 8)
-                        this.onBoardLeds.push(bl)
-                        el.appendChild(bl.element)
-                    }
-                }
-            }
-            this.onBoardNeopixels.sort((l, r) => {
-                const li = parseInt(l.name.replace(/^[^\d]*/, '')) || 0;
-                const ri = parseInt(r.name.replace(/^[^\d]*/, '')) || 0;
-                return li < ri ? -1 : li > ri ? 1 : 0;
-            })
-
-            // reset button
-            if (props.visualDef.reset) {
-                this.onBoardReset = new BoardResetButton(props.visualDef.reset)
-                el.appendChild(this.onBoardReset.element)
-            }
-
-            // touch pads
-            for (const l of props.visualDef.touchPads || []) {
-                const pin = pxsim.pinIds[l.label];
-                if (!pin) {
-                    console.error(`touch pin ${pin} not found`)
-                    continue;
-                }
-                const tp = new BoardTouchButton(l, pin);
-                this.onBoardTouchPads.push(tp);
-                el.appendChild(tp.element);
-            }
-
-            // regular buttons
-            for (const l of props.visualDef.buttons || []) {
-                const tp = new BoardButton(l);
-                this.onBoardButtons.push(tp);
-                el.appendChild(tp.element);
-            }
+        constructor(public props: IBoardProps) {
+            this.buildDom();
+            const dalBoard = board();
+            dalBoard.updateSubscribers.push(() => this.updateState());
+            if (props && props.wireframe)
+                U.addClass(this.element, "sim-wireframe");
 
             if (props && props.theme)
                 this.updateTheme();
@@ -178,189 +179,395 @@ namespace pxsim.visuals {
                 this.updateState();
             }
 
-
-        }
-
-        public updateTheme() {
-        }
-
-        public updateState() {
-            this.onBoardLeds.forEach(l => l.updateState());
-            if (this.board.neopixelPin) {
-                const state = this.board.neopixelState(this.board.neopixelPin.id);
-                if (state.buffer) {
-                    for (let i = 0; i < this.onBoardNeopixels.length; ++i) {
-                        const rgb = state.pixelColor(i)
-                        if (rgb !== null)
-                            this.onBoardNeopixels[i].setColor(rgb as any);
+            Runtime.messagePosted = (msg) => {
+                switch (msg.type || "") {
+                    case "status": {
+                        const state = (msg as pxsim.SimulatorStateMessage).state;
+                        if (state == "killed") this.kill();
+                        if (state == "running") this.begin();
+                        break;
                     }
                 }
             }
         }
 
-        private addDefs(el: SVGElement) {
-            const defs = svg.child(el, "defs", {});
-
-            let neopixelglow = svg.child(defs, "filter", { id: "neopixelglow", x: "-200%", y: "-200%", width: "400%", height: "400%" });
-            svg.child(neopixelglow, "feGaussianBlur", { stdDeviation: "4.3", result: "coloredBlur" });
-            let neopixelmerge = svg.child(neopixelglow, "feMerge", {});
-            svg.child(neopixelmerge, "feMergeNode", { in: "coloredBlur" })
-            svg.child(neopixelmerge, "feMergeNode", { in: "SourceGraphic" })
-
-            const style = svg.child(el, "style", {});
-            style.textContent = STYLE;
+        public getView(): SVGAndSize<SVGSVGElement> {
+            return {
+                el: this.wrapper as any,
+                y: 0,
+                x: 0,
+                w: CMView.BOARD_WIDTH,
+                h: CMView.BOARD_WIDTH
+            };
         }
-    }
 
-    class BoardResetButton {
-        element: SVGElement;
-        constructor(p: BoxDefinition) {
-            p.w = p.w || 15;
-            p.h = p.h || 15;
-            this.element = svg.elt("circle", {
-                cx: p.x + p.w / 2,
-                cy: p.y + p.h / 2,
-                r: Math.max(p.w, p.h) / 2,
-                class: "sim-board-button"
-            }) as SVGCircleElement
-            svg.title(this.element, "RESET");
-            // hooking up events
-            pointerEvents.down.forEach(evid => this.element.addEventListener(evid, ev => {
-                pxsim.U.addClass(this.element, "pressed");
-                pxsim.Runtime.postMessage(<pxsim.SimulatorCommandMessage>{
-                    type: "simulator",
-                    command: "restart"
+        public getCoord(pinNm: string): Coord {
+            // Not needed
+            return undefined;
+        }
+
+        public highlightPin(pinNm: string): void {
+            // Not needed
+        }
+
+        public getPinDist(): number {
+            // Not needed
+            return 10;
+        }
+
+        public updateTheme() {
+            let theme = this.props.theme;
+            this.layoutView.updateTheme(theme);
+        }
+
+        private getControlForNode(id: NodeType, port: number, useCache = true) {
+            if (useCache && this.cachedControlNodes[id] && this.cachedControlNodes[id][port]) {
+                return this.cachedControlNodes[id][port];
+            }
+
+            let view: View;
+            //switch (id) {
+                // case NodeType.ColorSensor: {
+                //     const state = cmboard().getInputNodes()[port] as ColorSensorNode;
+                //     if (state.getMode() == ColorSensorMode.Colors) {
+                //         view = new ColorGridControl(this.element, this.defs, state, port);
+                //     } else if (state.getMode() == ColorSensorMode.Reflected) {
+                //         view = new ColorWheelControl(this.element, this.defs, state, port);
+                //     } else if (state.getMode() == ColorSensorMode.Ambient) {
+                //         view = new ColorWheelControl(this.element, this.defs, state, port);
+                //     }
+                //     break;
+                // }
+                // case NodeType.UltrasonicSensor: {
+                //     const state = cmboard().getInputNodes()[port] as UltrasonicSensorNode;
+                //     view = new DistanceSliderControl(this.element, this.defs, state, port);
+                //     break;
+                // }
+                // case NodeType.InfraredSensor: {
+                //     const state = cmboard().getInputNodes()[port] as InfraredSensorNode;
+                //     if (state.getMode() == InfraredSensorMode.Proximity)
+                //         view = new ProximitySliderControl(this.element, this.defs, state, port);
+                //     else if (state.getMode() == InfraredSensorMode.RemoteControl)
+                //         view = new RemoteBeaconButtonsControl(this.element, this.defs, state, port);
+                //     break;
+                // }
+                // case NodeType.GyroSensor: {
+                //     const state = cmboard().getInputNodes()[port] as GyroSensorNode;
+                //     view = new RotationSliderControl(this.element, this.defs, state, port);
+                //     break;
+                // }
+                // case NodeType.MediumMotor:
+                // case NodeType.LargeMotor: {
+                //     const state = cmboard().getMotors()[port];
+                //     view = new MotorSliderControl(this.element, this.defs, state, port);
+                //     break;
+                // }
+           // }
+
+            if (view) {
+                if (!this.cachedControlNodes[id]) this.cachedControlNodes[id] = [];
+                this.cachedControlNodes[id][port] = view;
+                return view;
+            }
+
+            return undefined;
+        }
+
+        private getDisplayViewForNode(id: NodeType, port: number): LayoutElement {
+            if (this.cachedDisplayViews[id] && this.cachedDisplayViews[id][port]) {
+                return this.cachedDisplayViews[id][port];
+            }
+
+            let view: LayoutElement;
+            // switch (id) {
+            //     case NodeType.TouchSensor:
+            //         view = new TouchSensorView(port); break;
+            //     case NodeType.MediumMotor:
+            //         view = new MediumMotorView(port); break;
+            //     case NodeType.LargeMotor:
+            //         view = new LargeMotorView(port); break;
+            //     case NodeType.GyroSensor:
+            //         view = new GyroSensorView(port); break;
+            //     case NodeType.ColorSensor:
+            //         view = new ColorSensorView(port); break;
+            //     case NodeType.UltrasonicSensor:
+            //         view = new UltrasonicSensorView(port); break;
+            //     case NodeType.InfraredSensor:
+            //         view = new InfraredView(port); break;
+            //     case NodeType.Brick:
+            //         //return new BrickView(0);
+            //         view = this.layoutView.getBrick(); break;
+            // }
+
+            if (view) {
+                if (!this.cachedDisplayViews[id]) this.cachedDisplayViews[id] = [];
+                this.cachedDisplayViews[id][port] = view;
+                return view;
+            }
+
+            return undefined;
+        }
+
+        private getCloseIconView(port: number) {
+            if (this.cachedCloseIcons[port]) {
+                return this.cachedCloseIcons[port];
+            }
+            return 1;
+            // // const closeIcon = new CloseIconControl(this.element, this.defs, new PortNode(-1), -1);
+            // this.cachedCloseIcons[port] = closeIcon;
+            // return closeIcon;
+        }
+
+        private getBackgroundView(port: number) {
+            if (this.cachedBackgroundViews[port]) {
+                return this.cachedBackgroundViews[port];
+            }
+            const backgroundView = new BackgroundViewControl(this.element, this.defs, new PortNode(-1), -1);
+            this.cachedBackgroundViews[port] = backgroundView;
+            return backgroundView;
+        }
+
+        private buildDom() {
+            this.wrapper = document.createElement('div');
+            this.wrapper.style.display = 'inline';
+
+            this.element = svg.elt("svg", { height: "100%", width: "100%", "class": "user-select-none" }) as SVGSVGElement;
+
+            this.defs = svg.child(this.element, "defs") as SVGDefsElement;
+
+            this.style = svg.child(this.element, "style", {}) as SVGStyleElement;
+            this.style.textContent = CM_STYLE;
+
+            this.layoutView = new LayoutView();
+            this.layoutView.inject(this.element, this.props.theme);
+
+            const brick = new BrickViewPortrait(-1);
+            this.layoutView.setBrick(brick);
+            CMView.isPreviousBrickLandscape() ? this.layoutView.setlectBrick() : this.layoutView.unselectBrick();
+
+            //this.resize();
+
+            // Add Screen canvas to board
+            this.buildScreenCanvas();
+
+            this.wrapper.appendChild(this.element);
+            this.wrapper.appendChild(this.screenCanvas);
+            this.wrapper.appendChild(this.screenCanvasTemp);
+
+            window.addEventListener("resize", e => {
+                this.resize();
+            });
+        }
+
+        public resize() {
+            if (!this.element) return;
+            this.width = document.body.offsetWidth;
+            this.height = document.body.offsetHeight;
+            this.layoutView.layout(this.width, this.height);
+
+            this.updateState();
+            let state = cmboard().screenState;
+            this.updateScreenStep(state);
+        }
+
+        private buildScreenCanvas() {
+            this.screenCanvas = document.createElement("canvas");
+            this.screenCanvas.id = "board-screen-canvas";
+            this.screenCanvas.style.userSelect = "none";
+            this.screenCanvas.style.msUserSelect = "none";
+            this.screenCanvas.style.webkitUserSelect = "none";
+            (this.screenCanvas.style as any).MozUserSelect = "none";
+            this.screenCanvas.style.position = "absolute";
+            this.screenCanvas.style.color = "#000000";
+            this.screenCanvas.addEventListener(pxsim.pointerEvents.up, ev => {
+                console.log("click");
+                this.layoutView.toggleBrickSelect();
+                this.resize();
+            })
+            /*
+            this.screenCanvas.style.cursor = "crosshair";
+            this.screenCanvas.onmousemove = (e: MouseEvent) => {
+                const x = e.clientX;
+                const y = e.clientY;
+                const bBox = this.screenCanvas.getBoundingClientRect();
+                this.updateXY(Math.floor((x - bBox.left) / this.screenScaledWidth * SCREEN_WIDTH),
+                    Math.floor((y - bBox.top) / this.screenScaledHeight * SCREEN_HEIGHT));
+            }
+            this.screenCanvas.onmouseleave = () => {
+                this.updateXY(SCREEN_WIDTH, SCREEN_HEIGHT);
+            }
+            */
+
+            this.screenCanvas.width = SCREEN_WIDTH;
+            this.screenCanvas.height = SCREEN_HEIGHT;
+
+            this.screenCanvasCtx = this.screenCanvas.getContext("2d");
+
+            this.screenCanvasTemp = document.createElement("canvas");
+            this.screenCanvasTemp.style.display = 'none';
+        }
+
+        private kill() {
+            this.running = false;
+            if (this.lastAnimationIds.length > 0) {
+                this.lastAnimationIds.forEach(animationId => {
+                    cancelAnimationFrame(animationId);
                 })
-            }));
-            this.element.addEventListener(pointerEvents.leave, ev => {
-                pxsim.U.removeClass(this.element, "pressed");
-            })
-            this.element.addEventListener(pointerEvents.up, ev => {
-                pxsim.U.removeClass(this.element, "pressed");
-            })
-        }
-    }
-
-    class BoardLed {
-        private colorOff = "#aaa"
-        private backElement: SVGElement;
-        private ledElement: SVGElement;
-        element: SVGElement;
-
-        constructor(x: number, y: number, private colorOn: string, private pin: Pin, w: number, h: number) {
-            this.backElement = svg.elt("rect", { x, y, width: w, height: h, fill: this.colorOff });
-            this.ledElement = svg.elt("rect", { x, y, width: w, height: h, fill: this.colorOn, opacity: 0 });
-            svg.filter(this.ledElement, `url(#neopixelglow)`);
-            this.element = svg.elt("g", { class: "sim-led" });
-            this.element.appendChild(this.backElement);
-            this.element.appendChild(this.ledElement);
-        }
-
-        updateTheme(colorOff: string, colorOn: string) {
-            if (colorOff) {
-                this.colorOff = colorOff;
             }
-            if (colorOn) {
-                this.colorOn = colorOn;
+            // Kill the brick
+            this.layoutView.getPortraitBrick().kill();
+            this.layoutView.getLandscapeBrick().kill();
+
+            // Save previous inputs for the next cycle
+            CMView.previousSelectedInputs = {};
+            // cmboard().getInputNodes().forEach((node, index) =>
+            //     CMView.previousSelectedInputs[index] = (this.getDisplayViewForNode(node.id, index).getSelected()));
+            // CMView.previousSeletedOutputs = {};
+            // cmboard().getMotors().forEach((node, index) =>
+            //     CMView.previousSeletedOutputs[index] = (this.getDisplayViewForNode(node.id, index).getSelected()));
+            CMView.previousBrickLandscape = this.layoutView.isBrickLandscape();
+        }
+
+        private static previousSelectedInputs: pxt.Map<boolean> = {};
+        private static previousSeletedOutputs: pxt.Map<boolean> = {};
+        private static previousBrickLandscape: boolean;
+
+        private static isPreviousInputSelected(index: number) {
+            const previousInput = CMView.previousSelectedInputs[index];
+            delete CMView.previousSelectedInputs[index];
+            return previousInput;
+        }
+
+        private static isPreviousOutputSelected(index: number) {
+            const previousOutput = CMView.previousSeletedOutputs[index];
+            delete CMView.previousSeletedOutputs[index];
+            return previousOutput;
+        }
+
+        private static isPreviousBrickLandscape() {
+            const b = CMView.previousBrickLandscape;
+            CMView.previousBrickLandscape = false;
+            return !!b;
+        }
+
+        private begin() {
+            this.running = true;
+            this.updateState();
+        }
+
+        private running: boolean = false;
+        private lastAnimationIds: number[] = [];
+        public updateState() {
+            if (this.lastAnimationIds.length > 0) {
+                this.lastAnimationIds.forEach(animationId => {
+                    cancelAnimationFrame(animationId);
+                })
+            }
+            if (!this.running) return;
+            const fps = GAME_LOOP_FPS;
+            let now;
+            let then = pxsim.U.now();
+            let interval = 1000 / fps;
+            let delta;
+            let that = this;
+            function loop() {
+                const animationId = requestAnimationFrame(loop);
+                that.lastAnimationIds.push(animationId);
+                now = pxsim.U.now();
+                delta = now - then;
+                if (delta > interval) {
+                    then = now;
+                    that.updateStateStep(delta);
+                }
+            }
+            loop();
+        }
+
+        private updateStateStep(elapsed: number) {
+            //const inputNodes = cmboard().getInputNodes();
+            // inputNodes.forEach((node, index) => {
+            //     node.updateState(elapsed);
+            //     const view = this.getDisplayViewForNode(node.id, index);
+            //     if (!node.didChange() && !view.didChange()) return;
+            //     if (view) {
+            //         const previousSelected = CMView.isPreviousInputSelected(index);
+            //         const isSelected = previousSelected != undefined ? previousSelected : view.getSelected();
+            //         view.setSelected(isSelected);
+            //         const control = isSelected ? this.getControlForNode(node.id, index, !node.modeChange()) : undefined;
+            //         const closeIcon = control ? this.getCloseIconView(index + 10) : undefined;
+            //         const backgroundView = control && view.hasBackground() ? this.getBackgroundView(index + 10) : undefined;
+            //         this.layoutView.setInput(index, view, control, closeIcon, backgroundView);
+            //         view.updateState();
+            //         if (control) control.updateState();
+            //     }
+            // });
+
+            const brickNode = cmboard().getBrickNode();
+            if (brickNode.didChange()) {
+                this.layoutView.getPortraitBrick().updateState();
+                this.layoutView.getLandscapeBrick().updateState();
+            }
+
+            //const outputNodes = cmboard().getMotors();
+            // outputNodes.forEach((node, index) => {
+            //     node.updateState(elapsed);
+            //     const view = this.getDisplayViewForNode(node.id, index);
+            //     if (!node.didChange() && !view.didChange()) return;
+            //     if (view) {
+            //         const previousSelected = CMView.isPreviousOutputSelected(index);
+            //         const isSelected = previousSelected != undefined ? previousSelected : view.getSelected();
+            //         view.setSelected(isSelected);
+            //         const control = isSelected ? this.getControlForNode(node.id, index) : undefined;
+            //         const closeIcon = control ? this.getCloseIconView(index) : undefined;
+            //         const backgroundView = control && view.hasBackground() ? this.getBackgroundView(index) : undefined;
+            //         this.layoutView.setOutput(index, view, control, closeIcon, backgroundView);
+            //         view.updateState();
+            //         if (control) control.updateState();
+            //     }
+            // });
+
+            let state = cmboard().screenState;
+            if (state.didChange()) {
+                this.updateScreenStep(state);
             }
         }
 
-        updateState() {
-            const opacity = this.pin.mode & PinFlags.Digital ? (this.pin.value > 0 ? 1 : 0)
-                : 0.1 + Math.max(0, Math.min(1023, this.pin.value)) / 1023 * 0.8;
-            this.ledElement.setAttribute("opacity", opacity.toString())
+        private updateScreenStep(state: ScreenState) {
+            const isLandscape = this.layoutView.isBrickLandscape();
+            const bBox = this.layoutView.getBrick().getScreenBBox();
+            if (!bBox || bBox.width == 0) return;
+
+            const scale = (bBox.height - 2) / SCREEN_HEIGHT;
+            this.screenScaledHeight = (bBox.height - 2);
+            this.screenScaledWidth = this.screenScaledHeight / SCREEN_HEIGHT * SCREEN_WIDTH;
+
+            this.screenCanvas.style.top = `${bBox.top + 1}px`;
+            this.screenCanvas.style.left = `${bBox.left + ((bBox.width - this.screenScaledWidth) * 0.5)}px`;
+            this.screenCanvas.width = this.screenScaledWidth;
+            this.screenCanvas.height = this.screenScaledHeight;
+
+            this.screenCanvas.style.cursor = !isLandscape ? "zoom-in" : "zoom-out";
+
+            this.screenCanvasData = this.screenCanvasCtx.getImageData(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+            new Uint32Array(this.screenCanvasData.data.buffer).set(state.screen)
+
+            // Move the image to another canvas element in order to scale it
+            this.screenCanvasTemp.style.width = `${SCREEN_WIDTH}`;
+            this.screenCanvasTemp.style.height = `${SCREEN_HEIGHT}`;
+
+            this.screenCanvasTemp.getContext("2d").putImageData(this.screenCanvasData, 0, 0);
+
+            this.screenCanvasCtx.scale(scale, scale);
+            this.screenCanvasCtx.drawImage(this.screenCanvasTemp, 0, 0);
         }
-    }
 
-    class BoardNeopixel {
-        name: string;
-        element: SVGCircleElement;
+        private updateXY(width: number, height: number) {
+            const screenWidth = Math.max(0, Math.min(SCREEN_WIDTH, width));
+            const screenHeight = Math.max(0, Math.min(SCREEN_HEIGHT, height));
+            console.log(`width: ${screenWidth}, height: ${screenHeight}`);
 
-        constructor(name: string, x: number, y: number, r: number) {
-            this.name = name;
-            this.element = svg.elt("circle", { cx: x + r / 2, cy: y + r / 2, r: 10 }) as SVGCircleElement
-            svg.title(this.element, name);
-        }
-
-        setColor(rgb: [number, number, number]) {
-            const hsl = visuals.rgbToHsl(rgb);
-            let [h, s, l] = hsl;
-            const lx = Math.max(l * 1.3, 85);
-
-            // at least 10% luminosity
-            l = l * 90 / 100 + 10;
-            this.element.style.stroke = `hsl(${h}, ${s}%, ${Math.min(l * 3, 75)}%)`
-            this.element.style.strokeWidth = "1.5";
-            svg.fill(this.element, `hsl(${h}, ${s}%, ${lx}%)`);
-            svg.filter(this.element, `url(#neopixelglow)`);
-        }
-    }
-
-    class BoardButton {
-        element: SVGElement;
-        def: ButtonDefinition;
-        button: CommonButton;
-        constructor(def: ButtonDefinition) {
-            this.def = def;
-            def.w = def.w || 15;
-            def.h = def.h || 15;
-            this.element = svg.elt("circle", {
-                cx: def.x + def.w / 2,
-                cy: def.y + def.h / 2,
-                r: Math.max(def.w, def.h) / 2,
-                class: "sim-board-button"
-            }) as SVGCircleElement
-            svg.title(this.element, def.label);
-            // resolve button
-            this.button = def.index !== undefined
-                ? pxsim.pxtcore.getButton(def.index)
-                : pxsim.pxtcore.getButtonByPin(pxsim.pinIds[def.label]);
-            // hooking up events
-            pointerEvents.down.forEach(evid => this.element.addEventListener(evid, ev => {
-                this.button.setPressed(true);
-                pxsim.U.addClass(this.element, "pressed");
-            }));
-            this.element.addEventListener(pointerEvents.leave, ev => {
-                pxsim.U.removeClass(this.element, "pressed");
-                this.button.setPressed(false);
-            })
-            this.element.addEventListener(pointerEvents.up, ev => {
-                pxsim.U.removeClass(this.element, "pressed");
-                this.button.setPressed(false);
-            })
-        }
-    }
-
-    class BoardTouchButton {
-        element: SVGElement;
-        def: TouchPadDefinition;
-        button: TouchButton;
-        constructor(def: TouchPadDefinition, pinId: number) {
-            this.def = def;
-            def.w = def.w || 15;
-            def.h = def.h || 15;
-            this.element = svg.elt("circle", {
-                cx: def.x + def.w / 2,
-                cy: def.y + def.h / 2,
-                r: Math.max(def.w, def.h) / 2,
-                class: "sim-board-button"
-            }) as SVGCircleElement
-            svg.title(this.element, def.label);
-            // resolve button
-            this.button = pxsim.pxtcore.getTouchButton(pinId);
-            // hooking up events
-            pointerEvents.down.forEach(evid => this.element.addEventListener(evid, ev => {
-                this.button.setPressed(true);
-                pxsim.U.addClass(this.element, "pressed");
-            }));
-            this.element.addEventListener(pointerEvents.leave, ev => {
-                pxsim.U.removeClass(this.element, "pressed");
-                this.button.setPressed(false);
-            })
-            this.element.addEventListener(pointerEvents.up, ev => {
-                pxsim.U.removeClass(this.element, "pressed");
-                this.button.setPressed(false);
-            })
+            // TODO: add a reporter for the hovered XY position
         }
     }
 }
