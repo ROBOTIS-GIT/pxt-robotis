@@ -23,7 +23,6 @@
         "libs/serial",
         "libs/jacdac",
         "libs/jacdac-services",
-        "libs/jacdac-game",
         "libs/lightsensor",
         "libs/accelerometer",
         "libs/microphone",
