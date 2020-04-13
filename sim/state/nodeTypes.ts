@@ -1,7 +1,7 @@
 namespace pxsim {
     export enum NodeType {
         Port = 0,
-        Brick = 1,
+        Basic = 1,
         TouchSensor = 2,
         MediumMotor = 3,
         LargeMotor = 4,

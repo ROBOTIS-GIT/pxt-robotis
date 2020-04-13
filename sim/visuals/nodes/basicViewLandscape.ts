@@ -2,12 +2,12 @@
 
 namespace pxsim.visuals {
 
-    export class BrickViewLandscape extends BrickView implements LayoutElement {
+    export class BasicViewLandscape extends BasicView implements LayoutElement {
 
         constructor(port: number) {
             super(ROBOTIS_CM_SVG, "board", port);
 
-            this.btnids = ["btn_up", "btn_enter", "btn_down", "btn_right", "btn_left"];
+            this.btnids = ["BTN_A", "BTN_B"];
         }
 
         protected updateDimensions(width: number, height: number) {

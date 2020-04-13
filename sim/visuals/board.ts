@@ -294,9 +294,9 @@ namespace pxsim.visuals {
             //         view = new UltrasonicSensorView(port); break;
             //     case NodeType.InfraredSensor:
             //         view = new InfraredView(port); break;
-            //     case NodeType.Brick:
-            //         //return new BrickView(0);
-            //         view = this.layoutView.getBrick(); break;
+            //     case NodeType.Basic:
+            //         //return new BasicView(0);
+            //         view = this.layoutView.getBasic(); break;
             // }
 
             if (view) {
@@ -341,9 +341,9 @@ namespace pxsim.visuals {
             this.layoutView = new LayoutView();
             this.layoutView.inject(this.element, this.props.theme);
 
-            const brick = new BrickViewPortrait(-1);
-            this.layoutView.setBrick(brick);
-            CMView.isPreviousBrickLandscape() ? this.layoutView.setlectBrick() : this.layoutView.unselectBrick();
+            const basic = new BasicViewPortrait(-1);
+            this.layoutView.setBasic(basic);
+            CMView.isPreviousBasicLandscape() ? this.layoutView.setlectBasic() : this.layoutView.unselectBasic();
 
             //this.resize();
 
@@ -381,7 +381,7 @@ namespace pxsim.visuals {
             this.screenCanvas.style.color = "#000000";
             this.screenCanvas.addEventListener(pxsim.pointerEvents.up, ev => {
                 console.log("click");
-                this.layoutView.toggleBrickSelect();
+                this.layoutView.toggleBasicSelect();
                 this.resize();
             })
             /*
@@ -414,9 +414,9 @@ namespace pxsim.visuals {
                     cancelAnimationFrame(animationId);
                 })
             }
-            // Kill the brick
-            this.layoutView.getPortraitBrick().kill();
-            this.layoutView.getLandscapeBrick().kill();
+            // Kill the basic
+            this.layoutView.getPortraitBasic().kill();
+            this.layoutView.getLandscapeBasic().kill();
 
             // Save previous inputs for the next cycle
             CMView.previousSelectedInputs = {};
@@ -425,12 +425,12 @@ namespace pxsim.visuals {
             // CMView.previousSeletedOutputs = {};
             // cmboard().getMotors().forEach((node, index) =>
             //     CMView.previousSeletedOutputs[index] = (this.getDisplayViewForNode(node.id, index).getSelected()));
-            CMView.previousBrickLandscape = this.layoutView.isBrickLandscape();
+            CMView.previousBasicLandscape = this.layoutView.isBasicLandscape();
         }
 
         private static previousSelectedInputs: pxt.Map<boolean> = {};
         private static previousSeletedOutputs: pxt.Map<boolean> = {};
-        private static previousBrickLandscape: boolean;
+        private static previousBasicLandscape: boolean;
 
         private static isPreviousInputSelected(index: number) {
             const previousInput = CMView.previousSelectedInputs[index];
@@ -444,9 +444,9 @@ namespace pxsim.visuals {
             return previousOutput;
         }
 
-        private static isPreviousBrickLandscape() {
-            const b = CMView.previousBrickLandscape;
-            CMView.previousBrickLandscape = false;
+        private static isPreviousBasicLandscape() {
+            const b = CMView.previousBasicLandscape;
+            CMView.previousBasicLandscape = false;
             return !!b;
         }
 
@@ -502,10 +502,10 @@ namespace pxsim.visuals {
             //     }
             // });
 
-            const brickNode = cmboard().getBrickNode();
-            if (brickNode.didChange()) {
-                this.layoutView.getPortraitBrick().updateState();
-                this.layoutView.getLandscapeBrick().updateState();
+            const basicNode = cmboard().getBasicNode();
+            if (basicNode.didChange()) {
+                this.layoutView.getPortraitBasic().updateState();
+                this.layoutView.getLandscapeBasic().updateState();
             }
 
             //const outputNodes = cmboard().getMotors();
@@ -533,8 +533,8 @@ namespace pxsim.visuals {
         }
 
         private updateScreenStep(state: ScreenState) {
-            const isLandscape = this.layoutView.isBrickLandscape();
-            const bBox = this.layoutView.getBrick().getScreenBBox();
+            const isLandscape = this.layoutView.isBasicLandscape();
+            const bBox = this.layoutView.getBasic().getScreenBBox();
             if (!bBox || bBox.width == 0) return;
 
             const scale = (bBox.height - 2) / SCREEN_HEIGHT;

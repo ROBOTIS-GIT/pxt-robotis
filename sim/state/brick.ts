@@ -11,12 +11,13 @@ namespace pxsim {
     }
 
 
-    export class BrickNode extends BaseNode {
-        id = NodeType.Brick;
+    export class BasicNode extends BaseNode {
+        id = NodeType.Basic;
 
-
+        buttonState: CMButtonState;
         constructor() {
             super(-1);
+            this.buttonState = new CMButtonState();
         }
     }
 }

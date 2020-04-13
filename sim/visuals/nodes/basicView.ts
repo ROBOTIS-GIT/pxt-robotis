@@ -2,7 +2,7 @@
 
 namespace pxsim.visuals {
 
-    export class BrickView extends ModuleView implements LayoutElement {
+    export class BasicView extends ModuleView implements LayoutElement {
 
         private static ROBOTIS_SCREEN_ID = "robotis_screen";
         private static ROBOTIS_LIGHT_ID = "btn_color";
@@ -18,7 +18,7 @@ namespace pxsim.visuals {
         protected btnids: string[] = [];
 
         constructor(xml: string, prefix: string, port: number) {
-            super(xml, prefix, NodeType.Brick, port);
+            super(xml, prefix, NodeType.Basic, port);
         }
 
         protected buildDomCore() {
@@ -26,7 +26,7 @@ namespace pxsim.visuals {
             this.buttons = this.btnids.map(n => this.content.getElementById(this.normalizeId(n)) as SVGElement);
             this.buttons.forEach(b => U.addClass(b, "sim-button"));
 
-            this.light = this.content.getElementById(this.normalizeId(BrickView.ROBOTIS_LIGHT_ID)) as SVGElement;
+            this.light = this.content.getElementById(this.normalizeId(BasicView.ROBOTIS_LIGHT_ID)) as SVGElement;
         }
 
         protected optimizeForLightMode() {
@@ -38,7 +38,7 @@ namespace pxsim.visuals {
 
         private setStyleFill(svgId: string, fillUrl: string, lightFill?: string) {
             const el = (this.content.getElementById(svgId) as SVGRectElement);
-            if (el) el.style.fill = inLightMode() ? lightFill || BrickView.LIGHT_BLACK_COLOR : `url("#${fillUrl}")`;
+            if (el) el.style.fill = inLightMode() ? lightFill || BasicView.LIGHT_BLACK_COLOR : `url("#${fillUrl}")`;
         }
 
         public hasClick() {
@@ -59,7 +59,7 @@ namespace pxsim.visuals {
         private lastLightPattern: number = -1;
         private lastLightAnimationId: any = undefined;
         private updateLight() {
-            // let state = cmboard().getBrickNode().lightState;
+            // let state = cmboard().getBasicNode().lightState;
 
             // const lightPattern = state.lightPattern;
             // if (lightPattern == this.lastLightPattern) return;
@@ -70,19 +70,19 @@ namespace pxsim.visuals {
             // }
             // switch (lightPattern) {
             //     case 0:  // LED_BLACK
-            //         this.setStyleFill(this.normalizeId(BrickView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-black`));
+            //         this.setStyleFill(this.normalizeId(BasicView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-black`));
             //         //svg.fill(this.light, "#FFF");
             //         break;
             //     case 1:  // LED_GREEN
-            //         this.setStyleFill(this.normalizeId(BrickView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-green`), 'green');
+            //         this.setStyleFill(this.normalizeId(BasicView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-green`), 'green');
             //         //svg.fill(this.light, "#00ff00");
             //         break;
             //     case 2:  // LED_RED
-            //         this.setStyleFill(this.normalizeId(BrickView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-red`), 'red');
+            //         this.setStyleFill(this.normalizeId(BasicView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-red`), 'red');
             //         //svg.fill(this.light, "#ff0000");
             //         break;
             //     case 3:  // LED_ORANGE
-            //         this.setStyleFill(this.normalizeId(BrickView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-orange`), 'orange');
+            //         this.setStyleFill(this.normalizeId(BasicView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-orange`), 'orange');
             //         //svg.fill(this.light, "#FFA500");
             //         break;
             //     case 4:  // LED_GREEN_FLASH
@@ -130,9 +130,9 @@ namespace pxsim.visuals {
         private flash: boolean;
         private flashLightAnimationStep(id: string) {
             if (this.flash) {
-                this.setStyleFill(this.normalizeId(BrickView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-${id}`), id);
+                this.setStyleFill(this.normalizeId(BasicView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-${id}`), id);
             } else {
-                this.setStyleFill(this.normalizeId(BrickView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-black`));
+                this.setStyleFill(this.normalizeId(BasicView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-black`));
             }
             this.flash = !this.flash;
         }
@@ -162,14 +162,14 @@ namespace pxsim.visuals {
         private pulse: number = 0;
         private pulseLightAnimationStep(id: string) {
             switch (this.pulse) {
-                case 1: this.setStyleFill(this.normalizeId(BrickView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-black`)); break;
-                case 2: this.setStyleFill(this.normalizeId(BrickView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-black`)); break;
-                case 3: this.setStyleFill(this.normalizeId(BrickView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-black`)); break;
-                case 4: this.setStyleFill(this.normalizeId(BrickView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-black`)); break;
-                case 5: this.setStyleFill(this.normalizeId(BrickView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-${id}`), id); break;
-                case 6: this.setStyleFill(this.normalizeId(BrickView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-${id}`), id); break;
-                case 7: this.setStyleFill(this.normalizeId(BrickView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-black`)); break;
-                case 8: this.setStyleFill(this.normalizeId(BrickView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-${id}`), id); break;
+                case 1: this.setStyleFill(this.normalizeId(BasicView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-black`)); break;
+                case 2: this.setStyleFill(this.normalizeId(BasicView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-black`)); break;
+                case 3: this.setStyleFill(this.normalizeId(BasicView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-black`)); break;
+                case 4: this.setStyleFill(this.normalizeId(BasicView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-black`)); break;
+                case 5: this.setStyleFill(this.normalizeId(BasicView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-${id}`), id); break;
+                case 6: this.setStyleFill(this.normalizeId(BasicView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-${id}`), id); break;
+                case 7: this.setStyleFill(this.normalizeId(BasicView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-black`)); break;
+                case 8: this.setStyleFill(this.normalizeId(BasicView.ROBOTIS_LIGHT_ID), this.normalizeId(`linear-gradient-${id}`), id); break;
 
             }
             this.pulse++;
@@ -179,11 +179,34 @@ namespace pxsim.visuals {
         public kill() {
             cancelAnimationFrame(this.lastLightAnimationId);
         }
+        public attachEvents() {
+            var basicNode = cmboard().getBasicNode();
+            console.log(basicNode);
+            var bpState = basicNode.buttonState;
+            var stateButtons = bpState.buttons;
+       
+            this.buttons.forEach((btn, index) => {
+                let button = stateButtons[index];
 
+                pointerEvents.down.forEach(evid => btn.addEventListener(evid, ev => {
+                    button.setPressed(true);
+                    svg.fill(this.buttons[index], this.theme.buttonDown);
+                }));
+                btn.addEventListener(pointerEvents.leave, ev => {
+                    button.setPressed(false);
+                    svg.fill(this.buttons[index], this.theme.buttonUps[index]);
+                })
+                btn.addEventListener(pointerEvents.up, ev => {
+                    button.setPressed(false);
+                    svg.fill(this.buttons[index], this.theme.buttonUps[index]);
+                    console.log("button clicked");
+                })
+            })
+        }
         
         public getScreenBBox() {
             if (!this.content) return undefined;
-            const screen = this.content.getElementById(this.normalizeId(BrickView.ROBOTIS_SCREEN_ID));
+            const screen = this.content.getElementById(this.normalizeId(BasicView.ROBOTIS_SCREEN_ID));
             if (!screen) return undefined;
             return screen.getBoundingClientRect();
         }

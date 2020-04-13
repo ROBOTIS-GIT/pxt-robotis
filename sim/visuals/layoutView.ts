@@ -3,7 +3,7 @@
 /// <reference path="./nodes/portView.ts" />
 
 namespace pxsim.visuals {
-    export const BRICK_HEIGHT_RATIO = 1 / 3;
+    export const BASIC_HEIGHT_RATIO = 1 / 3;
     export const MODULE_AND_WIRING_HEIGHT_RATIO = 1 / 3; // For inputs and outputs
 
     export const MODULE_HEIGHT_RATIO = MODULE_AND_WIRING_HEIGHT_RATIO * 4 / 5;
@@ -41,9 +41,9 @@ namespace pxsim.visuals {
 
         
 
-        private brick: BrickViewPortrait;
-        private brickLandscape: BrickViewLandscape;
-        private brickInLandscape: boolean;
+        private basic: BasicViewPortrait;
+        private basicLandscape: BasicViewLandscape;
+        private basicInLandscape: boolean;
 
         private offsets: number[];
         private contentGroup: SVGGElement;
@@ -57,8 +57,8 @@ namespace pxsim.visuals {
             this.outputContainers = [new ViewContainer(), new ViewContainer, new ViewContainer(), new ViewContainer()];
             this.inputContainers = [new ViewContainer(), new ViewContainer, new ViewContainer(), new ViewContainer()];
 
-            this.brick = new BrickViewPortrait(0);
-            this.brickLandscape = new BrickViewLandscape(0);
+            this.basic = new BasicViewPortrait(0);
+            this.basicLandscape = new BasicViewLandscape(0);
 
             // for (let port = 0; port < DAL.NUM_OUTPUTS; port++) {
             //     this.outputWires[port] = new WireView(port);
@@ -76,52 +76,52 @@ namespace pxsim.visuals {
             this.position();
         }
 
-        public setBrick(brick: BrickView) {
-            this.brick = brick;
-            this.brick.inject(this.scrollGroup, this.theme);
-            //this.brickLandscape.inject(this.scrollGroup, this.theme);
-            this.brick.setSelected(false);
-            //this.brickLandscape.setSelected(true);
-            //this.brickLandscape.setVisible(false);
+        public setBasic(basic: BasicView) {
+            this.basic = basic;
+            this.basic.inject(this.scrollGroup, this.theme);
+            //this.basicLandscape.inject(this.scrollGroup, this.theme);
+            this.basic.setSelected(false);
+            //this.basicLandscape.setSelected(true);
+            //this.basicLandscape.setVisible(false);
             this.position();
         }
 
-        public isBrickLandscape() {
-            return this.brickInLandscape;
+        public isBasicLandscape() {
+            return this.basicInLandscape;
         }
 
-        public getBrick() {
-            return this.brickInLandscape ? this.getLandscapeBrick() : this.getPortraitBrick();
+        public getBasic() {
+            return this.basicInLandscape ? this.getLandscapeBasic() : this.getPortraitBasic();
         }
 
-        public getPortraitBrick() {
-            return this.brick;
+        public getPortraitBasic() {
+            return this.basic;
         }
 
-        public getLandscapeBrick() {
-            return this.brickLandscape;
+        public getLandscapeBasic() {
+            return this.basicLandscape;
         }
 
-        public unselectBrick() {
-            this.brick.setSelected(false);
-            this.brickLandscape.setSelected(true);
-            this.brickLandscape.setVisible(false);
-            this.brickInLandscape = false;
+        public unselectBasic() {
+            this.basic.setSelected(false);
+            this.basicLandscape.setSelected(true);
+            this.basicLandscape.setVisible(false);
+            this.basicInLandscape = false;
             this.position();
         }
 
-        public setlectBrick() {
-            this.brick.setSelected(true);
-            this.brickLandscape.setSelected(false);
-            this.brickLandscape.setVisible(true);
-            this.brickInLandscape = true;
+        public setlectBasic() {
+            this.basic.setSelected(true);
+            this.basicLandscape.setSelected(false);
+            this.basicLandscape.setVisible(true);
+            this.basicInLandscape = true;
             this.position();
         }
 
-        public toggleBrickSelect() {
-            const selected = this.brickInLandscape;
-            if (selected) this.unselectBrick();
-            else this.setlectBrick();
+        public toggleBasicSelect() {
+            const selected = this.basicInLandscape;
+            if (selected) this.unselectBasic();
+            else this.setlectBasic();
         }
 
         public setInput(port: number, view: LayoutElement, control?: View, closeIcon?: View, backgroundView?: View) {
@@ -256,8 +256,8 @@ namespace pxsim.visuals {
             this.inputs.forEach(n => {
                 n.updateTheme(theme);
             })
-            this.brick.updateTheme(theme);
-            this.brickLandscape.updateTheme(theme);
+            this.basic.updateTheme(theme);
+            this.basicLandscape.updateTheme(theme);
             this.outputs.forEach(n => {
                 n.updateTheme(theme);
             })
@@ -281,9 +281,9 @@ namespace pxsim.visuals {
 
             const moduleHeight = this.getModuleHeight();
 
-            const brickHeight = this.getBrickHeight();
-            const brickWidth = this.brick.getInnerWidth() / this.brick.getInnerHeight() * brickHeight;
-            const brickPadding = (contentWidth - brickWidth) / 2;
+            const basicHeight = this.getBasicHeight();
+            const basicWidth = this.basic.getInnerWidth() / this.basic.getInnerHeight() * basicHeight;
+            const basicPadding = (contentWidth - basicWidth) / 2;
 
             const modulePadding = this.getModulePadding();
             const moduleSpacing = contentWidth / 4;
@@ -336,10 +336,10 @@ namespace pxsim.visuals {
             currentX = 0;
             currentY = moduleHeight;
 
-            const wireBrickSpacing = brickWidth / 5;
+            const wireBasicSpacing = basicWidth / 5;
             const wiringYPadding = 5;
             let wireStartX = 0;
-            let wireEndX = brickPadding + wireBrickSpacing;
+            let wireEndX = basicPadding + wireBasicSpacing;
             let wireEndY = currentY + this.getWiringHeight() + wiringYPadding;
             let wireStartY = currentY - wiringYPadding;
 
@@ -348,20 +348,20 @@ namespace pxsim.visuals {
             //     this.outputWires[port].updateDimensions(wireStartX + moduleSpacing * this.outputs[port].getWiringRatio(), wireStartY, wireEndX, wireEndY);
             //     this.outputWires[port].setSelected(this.outputs[port].getId() == NodeType.Port);
             //     wireStartX += moduleSpacing;
-            //     wireEndX += wireBrickSpacing;
+            //     wireEndX += wireBasicSpacing;
             // }
 
-            currentX = brickPadding;
+            currentX = basicPadding;
             currentY += this.getWiringHeight();
 
-            // Render the brick in the middle
-            this.brick.resize(brickWidth, brickHeight);
-            this.brick.translate(currentX, currentY);
-            this.brickLandscape.resize(contentWidth, brickHeight);
-            this.brickLandscape.translate((contentWidth - this.brickLandscape.getContentWidth()) / 2, currentY);
+            // Render the basic in the middle
+            this.basic.resize(basicWidth, basicHeight);
+            this.basic.translate(currentX, currentY);
+            this.basicLandscape.resize(contentWidth, basicHeight);
+            this.basicLandscape.translate((contentWidth - this.basicLandscape.getContentWidth()) / 2, currentY);
 
             currentX = modulePadding;
-            currentY += brickHeight + this.getWiringHeight();
+            currentY += basicHeight + this.getWiringHeight();
 
             this.inputs.forEach((n, i) => {
                 this.inputContainers[i].translate(currentX + (this.getAbosluteModuleWidth() - this.getInnerModuleWidth()) / 2, currentY);
@@ -405,7 +405,7 @@ namespace pxsim.visuals {
             })
 
             wireStartX = moduleSpacing / 2;
-            wireEndX = brickPadding + wireBrickSpacing;
+            wireEndX = basicPadding + wireBasicSpacing;
             wireEndY = currentY - this.getWiringHeight() - wiringYPadding;
             wireStartY = currentY + wiringYPadding;
 
@@ -414,12 +414,12 @@ namespace pxsim.visuals {
             //     this.inputWires[port].updateDimensions(wireStartX, wireStartY, wireEndX, wireEndY);
             //     this.inputWires[port].setSelected(this.inputs[port].getId() == NodeType.Port);
             //     wireStartX += moduleSpacing;
-            //     wireEndX += wireBrickSpacing;
+            //     wireEndX += wireBasicSpacing;
             // }
         }
 
-        public getBrickHeight() {
-            return this.height * BRICK_HEIGHT_RATIO;
+        public getBasicHeight() {
+            return this.height * BASIC_HEIGHT_RATIO;
         }
 
         public getWiringHeight() {

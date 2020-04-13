@@ -88,3 +88,19 @@ namespace pxsim.visuals {
         }
     }
 }
+
+namespace pxsim.pxtcore{
+    //HGonKim_200406 해당버튼 정보 받아오는 함수
+    export function getButtonCM(buttonId: number): CommonButton {
+        const buttons = cmboard().basicNode.buttonState.buttons;
+        if (buttonId === 2) {
+            cmboard().basicNode.buttonState.usesButtonAB = true;
+            runtime.queueDisplayUpdate();
+        }
+        if (buttonId < buttons.length && buttonId >= 0) {
+            return buttons[buttonId];
+        }
+        // panic
+        return undefined;
+    }
+}

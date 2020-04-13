@@ -11,7 +11,7 @@ namespace pxsim {
         audioState: AudioState;
     
      
-        brickNode: BrickNode;
+        basicNode: BasicNode;
 
 
         highcontrastMode?: boolean;
@@ -29,7 +29,7 @@ namespace pxsim {
 
             this.bus.setNotify(DAL.DEVICE_ID_NOTIFY, DAL.DEVICE_ID_NOTIFY_ONE);
 
-            this.brickNode = new BrickNode();
+            this.basicNode = new BasicNode();
 
             this.screenState = new ScreenState(["#97b5a6", "#000000"], visuals.SCREEN_WIDTH, visuals.SCREEN_HEIGHT); //KHG_색상지정
             this.audioState = new AudioState();
@@ -93,8 +93,8 @@ namespace pxsim {
             return this.viewHost.screenshotAsync(width);
         }
 
-        getBrickNode() {
-            return this.brickNode;
+        getBasicNode() {
+            return this.basicNode;
         }
 
     }

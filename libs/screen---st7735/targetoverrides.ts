@@ -83,8 +83,8 @@ namespace basic {
      */
     //% blockId=screen_print block="show string %text|at line %line"
     //% weight=98 group="Screen" inlineInputMode="inline" blockGap=8
-    //% help=brick/show-string
-    //% line.min=1 line.max=10
+    //% help=basic/show-string
+    //% line.min=1 line.max=12
     export function showString(text: string, line: number) {
         if (screenMode != ScreenMode.ShowLines) {
             screenMode = ScreenMode.ShowLines;
@@ -109,7 +109,7 @@ namespace basic {
      */
     //% blockId=screenShowNumber block="show number %name|at line %line"
     //% weight=96 group="Screen" inlineInputMode="inline" blockGap=8
-    //% help=brick/show-number
+    //% help=basic/show-number
     //% line.min=1 line.max=10
     export function showNumber(value: number, line: number) {
         showString("" + value, line);
@@ -122,7 +122,7 @@ namespace basic {
      */
     //% blockId=screenShowValue block="show value %name|= %text|at line %line"
     //% weight=96 group="Screen" inlineInputMode="inline" blockGap=8
-    //% help=brick/show-value
+    //% help=basic/show-value
     //% line.min=1 line.max=10
     export function showValue(name: string, value: number, line: number) {
         value = Math.round(value * 1000) / 1000;
@@ -136,7 +136,7 @@ namespace basic {
      */
     //% blockId=screen_show_image block="show image %image=screen_image_picker"
     //% weight=100 group="Screen" blockGap=8
-    //% help=brick/show-image
+    //% help=basic/show-image
     export function showImage(image: Image, duration: number = 400) {
         if (!image) return;
         image.width *= 2;
