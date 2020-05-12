@@ -1,5 +1,6 @@
 {
-  "driveDisplayName": "",
+  "boardName": "E2 ROBOT",
+  "driveDisplayName": "E2 DRIVER",
   "visual": {
     "image": "pkg://board.svg",
     "useCrocClips": false,
