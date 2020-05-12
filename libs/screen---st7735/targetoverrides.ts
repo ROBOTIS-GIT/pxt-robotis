@@ -122,6 +122,27 @@ namespace communication {
 
 //% color="#EF2D56" weight=97
 namespace lcd {
+    const textOffset = 4;
+    const lineOffset = 2;
+
+    export let font = image.font8
+
+    /**
+     * Gets the text line height
+     */
+    //%
+    export function lineHeight(): number {
+        return font.charHeight + lineOffset;
+    }
+
+    /**
+     * Number of line
+     */
+    //%
+    export function lineCount(): number {
+        return ((screen.height - textOffset) / lineHeight()) >> 0;
+    }
+
     /**
      * LCD 창에 그린 이미지 출력
      * @param image draw image
@@ -156,5 +177,43 @@ namespace lcd {
     //% blockGap=8
     export function clearDisplay(){
         screen.fill(0);
+    }
+
+    /**
+     * 입력한 문자열 출력
+     * @param text draw text
+     */
+    //% blockId=text_lcd_display block="문자 출력 %text"
+    //% weight=1
+    //% blockGap=8
+    export function drawTextDisplay(text: string){
+        if(!text) return;        
+
+        screen.fill(0);
+
+        const h = lineHeight();
+        const y = textOffset + h;
+        screen.fillRect(0, y, screen.width, h, 0);
+        screen.print(text, textOffset, y, 1, font);
+
+    }
+
+    /**
+     * LCD 화면에 숫자(값) 출력
+     * @param displayNum display number
+     */
+    //% blockId=display_lcd_num block="수 출력 %displayNum"
+    //% weight=8
+    //% blockGap=8
+    export function displayNum(displayNum?:number) {
+
+        if(!displayNum) return;        
+
+        screen.fill(0);
+        const h = lineHeight();
+        const y = textOffset + h;
+        screen.fillRect(0, y, screen.width, h, 0);
+        screen.print(displayNum.toString(), textOffset, y, 1, font);
+
     }
 }
