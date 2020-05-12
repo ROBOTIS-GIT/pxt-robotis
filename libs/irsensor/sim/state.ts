@@ -10,7 +10,7 @@ namespace pxsim {
     }
 
     export class IrsensorState {
-        public sensorUsed: boolean = false;
+        public sensorUsed: boolean = false; //200508 펠리가 커멘트 달았음. hot/cold?
         public level: number[];
 
         constructor() {

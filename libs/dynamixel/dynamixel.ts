@@ -162,6 +162,7 @@ namespace dynamixel {
     //% id.min=0 id.max=252 id.defl=1
     //% value.min=0 value.max=4095
     //% weight=18
+    //% help=dynamixel/test
     export function setPosition(id: number, value: number): void {
         const d = device();
         if(d){

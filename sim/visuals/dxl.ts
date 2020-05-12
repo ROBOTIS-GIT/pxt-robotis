@@ -13,6 +13,7 @@ namespace pxsim.visuals{
 
         updateState() {
             //console.log("asdf");
+            this.content
             const holeEl = this.content.getElementById("hole");
             const holeEl_2 = this.content.getElementById("hole-7");
             const state = currentboard().getDxl();
