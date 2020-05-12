@@ -1,3 +1,8 @@
 /*******************************
     User Variable Overrides
 *******************************/
+
+.ui.card.link.newprojectcard {
+    background: fade(#414242, 90%) !important;
+}
+
