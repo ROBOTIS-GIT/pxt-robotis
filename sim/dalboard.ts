@@ -139,21 +139,21 @@ namespace pxsim {
             this.builtinVisuals["buttons"] = () => new visuals.ButtonView();
             this.builtinVisuals["microservo"] = () => new visuals.MicroServoView();
 
-            this.builtinParts["neopixel"] = (pin: Pin) => { return this.neopixelState(pin.id); };
-            this.builtinVisuals["neopixel"] = () => new visuals.NeoPixelView(parsePinString);
-            this.builtinPartVisuals["neopixel"] = (xy: visuals.Coord) => visuals.mkNeoPixelPart(xy);
+            // this.builtinParts["neopixel"] = (pin: Pin) => { return this.neopixelState(pin.id); };
+            // this.builtinVisuals["neopixel"] = () => new visuals.NeoPixelView(parsePinString);
+            // this.builtinPartVisuals["neopixel"] = (xy: visuals.Coord) => visuals.mkNeoPixelPart(xy);
 
-            this.builtinParts["dotstar"] = (pin: Pin) => { return this.neopixelState(pin.id); };
-            this.builtinVisuals["dotstar"] = () => new visuals.NeoPixelView(parsePinString);
-            this.builtinPartVisuals["dotstar"] = (xy: visuals.Coord) => visuals.mkNeoPixelPart(xy);
+            // this.builtinParts["dotstar"] = (pin: Pin) => { return this.neopixelState(pin.id); };
+            // this.builtinVisuals["dotstar"] = () => new visuals.NeoPixelView(parsePinString);
+            // this.builtinPartVisuals["dotstar"] = (xy: visuals.Coord) => visuals.mkNeoPixelPart(xy);
 
             this.builtinParts["lcd"] =  this.lcdState;
             this.builtinVisuals["lcd"] = () => new visuals.LCDView();
             this.builtinPartVisuals["lcd"] = (xy: visuals.Coord) => visuals.mkLCDPart(xy);
             
-            this.builtinParts["pixels"] = (pin: Pin) => { return this.neopixelState(undefined); };
-            this.builtinVisuals["pixels"] = () => new visuals.NeoPixelView(parsePinString);
-            this.builtinPartVisuals["pixels"] = (xy: visuals.Coord) => visuals.mkNeoPixelPart(xy);
+            // this.builtinParts["pixels"] = (pin: Pin) => { return this.neopixelState(undefined); };
+            // this.builtinVisuals["pixels"] = () => new visuals.NeoPixelView(parsePinString);
+            // this.builtinPartVisuals["pixels"] = (xy: visuals.Coord) => visuals.mkNeoPixelPart(xy);
 
             this.builtinPartVisuals["buttons"] = (xy: visuals.Coord) => visuals.mkBtnSvg(xy);
 
