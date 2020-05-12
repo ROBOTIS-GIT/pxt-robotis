@@ -48,6 +48,8 @@ namespace lcd{
     export function drawTextDisplay(text: string){
         if(!text) return;
 
+        
+
     }
 
     /**

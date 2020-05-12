@@ -12,8 +12,6 @@ namespace output {
 //% color="#5F3109" weight=98
 //% groups='["LCD"]'
 namespace input {
-
-
 }
 
 //% color="#EF2D56" weight=97
