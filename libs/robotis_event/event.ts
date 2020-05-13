@@ -49,7 +49,7 @@ namespace event {
      */
     //% block="%doWork 이면 실행"
     //% weight=3
-    export function boolExcute(doWork: boolean, handler: () => void) {
+    export function boolExcute(doWork: Boolean, handler: () => void) {
         if(doWork){
             handler();
         }
