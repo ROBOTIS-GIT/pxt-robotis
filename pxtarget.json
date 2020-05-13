@@ -216,6 +216,7 @@
         "invertedMenu": false,
         "invertedToolbox": false,
         "invertedMonaco": false,
+        "coloredToolbox": false,
         "monacoToolbox": true,
         "highContrast": true,
         "greenScreen": true,
