@@ -166,7 +166,13 @@ namespace lcd {
     export function drawIconDisplay(image: Image){
         if(!image) return;
         screen.fill(0);
-        screen.drawImage(image,0,0);
+        image = image.doubled();
+        image = image.doubled();
+        
+        let centerX = screen.width / 2.0 - (image.width / 2.0);
+        let centerY = screen.height / 2.0 - (image.height / 2.0);
+        
+        screen.drawImage(image,centerX,centerY);
     }
 
     /**
