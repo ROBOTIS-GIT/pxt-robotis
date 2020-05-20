@@ -30,10 +30,12 @@ namespace pxsim {
 }
 
 namespace pxsim.dynamixel {
+    
+
     export function __setVelocity(id:number, velocity:number): void{
         let dxl;
         let dxl_2;
-        console.log(id + " , " + velocity);
+        
         switch(id){
             case 1:
                 dxl = (board() as DalBoard).dxlState;
@@ -56,7 +58,7 @@ namespace pxsim.dynamixel {
                 dxl = (board() as DalBoard).dxlState;
                 // dxl.setPosition(id, angle);
                 const curState = dxl.getPosition();
-                const velocity = dxl.velocity / 1023;
+                const velocity = dxl.velocity / 4095;
                 
                 if(curState[1] >= 360) curState[1] -= 360;
                 else if(curState[1] <= -360) curState[1] += 360;
@@ -80,7 +82,7 @@ namespace pxsim.dynamixel {
                 {
                     if(velocity != 0)
                     {
-                        const toAngle = curState[1] + velocity * 2;
+                        const toAngle = curState[1] + velocity * 1;
                         dxl.setPosition(id, toAngle);
                     }
                     
@@ -93,7 +95,7 @@ namespace pxsim.dynamixel {
                 dxl_2 = (board() as DalBoard).dxlState_2;
                 
                 const curState_2 = dxl_2.getPosition();
-                const velocity_2 = dxl_2.velocity / 1023;
+                const velocity_2 = dxl_2.velocity / 4095;
                 
                 if(curState_2[1] >= 360) curState_2[1] -= 360;
                 else if(curState_2[1] <= -360) curState_2[1] += 360;
@@ -117,7 +119,7 @@ namespace pxsim.dynamixel {
                 {
                     if(velocity_2 != 0)
                     {
-                        const toAngle = curState_2[1] + velocity_2 * 5;
+                        const toAngle = curState_2[1] + velocity_2 * 1;
                         dxl_2.setPosition(id, toAngle);
                     }
                     
@@ -129,6 +131,28 @@ namespace pxsim.dynamixel {
         }
         //console.log("dxl__setPosition");
         
+        runtime.queueDisplayUpdate();
+
+    }
+    export function __rotate(id:number, velocity:number): void{
+        let dxl;
+        let dxl_2;
+        const velocity_calc = velocity / 4095;
+
+        switch(id){
+            case 1:
+                dxl = (board() as DalBoard).dxlState;
+                const curState = dxl.getPosition();
+                const toAngle = curState[1] + velocity_calc * 1;
+                dxl.setPosition(id, toAngle);
+                break;
+            case 2:
+                dxl_2 = (board() as DalBoard).dxlState_2;
+                const curState_2 = dxl_2.getPosition();
+                const toAngle_2 = curState_2[1] + velocity_calc * 1;
+                dxl_2.setPosition(id, toAngle_2);
+                break;
+        }
         runtime.queueDisplayUpdate();
 
     }

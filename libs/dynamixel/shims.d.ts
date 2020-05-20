@@ -16,6 +16,11 @@ declare namespace dynamixel {
      */
     //% shim=dynamixel::__setVelocity
     function __setVelocity(id: int32, velocity: int32): void;
+
+    /**
+     */
+    //% shim=dynamixel::__rotate
+    function __rotate(id: int32, velocity: int32): void;
 }
 
 

@@ -6,7 +6,8 @@
     ],
     "public": true,
     "dependencies": {
-        "core---nrf52": "file:../core---nrf52"
+        "core---nrf52": "file:../core---nrf52",
+        "dynamixel": "file:../dynamixel"
     },
     "hidden": true
 }

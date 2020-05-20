@@ -110,6 +110,8 @@
     //% weight=18
     //% advanced=true
     export function setOperatingMode(id: number, mode: DXLOperatingMode): void {
+        if(mode < 0) return;
+        
         const d = device();
         if(d){
             let data = control.createBuffer(1);

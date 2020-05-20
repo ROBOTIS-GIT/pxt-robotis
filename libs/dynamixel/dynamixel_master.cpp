@@ -36,6 +36,14 @@ namespace dynamixel {
     {
 
     }
+
+    /**
+    */
+    //%
+    void __rotate(int id, int velocity)
+    {
+
+    }
 } // namespace dynamixel
 
 namespace DynamixelDeviceMethods {
