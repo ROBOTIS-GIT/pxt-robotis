@@ -58,8 +58,8 @@ namespace control {
     //% ms.fieldEditor="numberdropdown" ms.fieldOptions.decompileLiterals=true
     //% ms.fieldOptions.data='[["100 ms", 100],["200 ms", 200],["500 ms", 500],["1 second", 1000],["2 second", 2000],["3 second", 3000]]'
     export function waitForSecnods(ms: number) {
-
-        delay(ms);
+        pause(ms);
+        //delay(ms);
         // (async () => { 
         //     // Do something before delay
         //     console.log('before delay')
@@ -74,6 +74,7 @@ namespace control {
     function delay(ms: number) {
         // return new Promise( resolve => setTimeout(resolve, ms) );
         return setTimeout(function() {  }, ms);
+        
     }
 
     /**

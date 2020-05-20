@@ -18,5 +18,12 @@
     "tslint.enable": true,
     "tslint.rulesDirectory": "node_modules/tslint-microsoft-contrib",
     "typescript.tsdk": "./node_modules/typescript/lib",
-    "editor.tabSize": 4
+    "editor.tabSize": 4,
+    "files.associations": {
+        "istream": "cpp",
+        "memory": "cpp",
+        "ostream": "cpp",
+        "streambuf": "cpp",
+        "xstring": "cpp"
+    }
 }
