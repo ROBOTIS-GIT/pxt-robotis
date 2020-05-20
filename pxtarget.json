@@ -83,7 +83,7 @@
     },
     "runtime": {
         "mathBlocks": true,
-        "loopsBlocks": false,
+        "loopsBlocks": true,
         "logicBlocks": true,
         "variablesBlocks": true,
         "textBlocks": true,
@@ -93,8 +93,8 @@
             "useNewFunctions": true,
             "extraFunctionEditorTypes": []
         },
-        "onStartNamespace": "event",
-        "onStartColor": "#68C3E2",
+        "onStartNamespace": "loops",
+        "onStartColor": "#40bf4a",
         "onStartWeight": 100,
         "pauseUntilBlock": {},
         "breakBlock": true,

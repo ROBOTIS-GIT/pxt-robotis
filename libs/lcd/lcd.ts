@@ -8,15 +8,15 @@ enum Mode {
 //% color="#00852B" weight=97
 namespace lcd{
 
-    /**
-     * LCD 화면에 숫자(값) 출력
-     * @param displayNum display number
-     */
-    //% blockId=display_lcd_num block="수 출력 %displayNum"
-    //% weight=8
-    //% blockGap=8
-    export function displayNum(displayNum?:number) {
-    }
+    // /**
+    //  * LCD 화면에 숫자(값) 출력
+    //  * @param displayNum display number
+    //  */
+    // //% blockId=display_lcd_num block="수 출력 %displayNum"
+    // //% weight=8
+    // //% blockGap=8
+    // export function displayNum(displayNum?:number) {
+    // }
 
     /**
      * 현재 LCD의 스크린 밝기
@@ -38,17 +38,19 @@ namespace lcd{
     export function setLcdMode(mode: Mode) {
     }
 
-    /**
-     * 입력한 문자열 출력
-     * @param text draw text
-     */
-    //% blockId=text_lcd_display block="문자 출력 %text"
-    //% weight=1
-    //% blockGap=8
-    export function drawTextDisplay(text: string){
-        if(!text) return;
+    // /**
+    //  * 입력한 문자열 출력
+    //  * @param text draw text
+    //  */
+    // //% blockId=text_lcd_display block="문자 출력 %text"
+    // //% weight=1
+    // //% blockGap=8
+    // export function drawTextDisplay(text: string){
+    //     if(!text) return;
 
-    }
+        
+
+    // }
 
     /**
      * 지정한 값으로 LCD 밝기 변경
